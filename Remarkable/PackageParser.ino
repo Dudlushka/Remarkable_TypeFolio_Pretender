@@ -17,7 +17,6 @@ typedef enum ProcessState
 } ProcessState_t;
 
 
-
   static ProcessState_t state = St_init; //"state machine" state
   static uint16_t buff_i   = 0;   //buffer index
   static uint8_t  csum     = 0;     //checksum
@@ -27,13 +26,10 @@ typedef enum ProcessState
 void ReStartStateMachine()
 {
   state = St_init;
-  
 }
 
 int ProcessPack_low(uint8_t data_in)
 {
-
-
   switch(state)
   {
   //----------------------------------------
@@ -110,11 +106,6 @@ int ProcessPack_low(uint8_t data_in)
   return 0;
 }
 
-void FirstTestResponse()
-{
-  Response_07();
-}
-
 uint8_t TxBuff[128] = {0};
 void GeneralTxMessage(uint8_t cmd,uint8_t* buff,uint16_t len)
 {
@@ -141,22 +132,6 @@ void GeneralTxMessage(uint8_t cmd,uint8_t* buff,uint16_t len)
   Serial1.write(TxBuff,i+5);     
 }
 
-//3A 08 00 20 
-//02 11 04 06 10 07 05 12 
-//8D
-
-//nope!
-void SuperResponsePack()
-{
-  Response_02();
-  Response_11();
-  Response_04();
-  Response_06();
-  Response_10();
-  Response_07();
-  Response_05();
-  Response_12();
-}
 
 #define AUTH_KEY_STRING ("@O8eO77%o^4*1GE@oeodd#WMa%8Kr6v@")
 void SendAuthKeyResponse()
@@ -169,49 +144,9 @@ void SendAuthKeyResponse()
 
 
 void Keep_Alive()
-{
-  
+{  
   GeneralTxMessage(0x40,0,0);
 }
-
-
-void SendKeyboard1()
-{
-  uint8_t resp[2] = {0x01,0x00};
-   GeneralTxMessage(0x51,resp,sizeof(resp));
-  
-}
-
-
-void SendKeyboard2()
-{
-  uint8_t resp[2] = {0x00,0x01};
-   GeneralTxMessage(0x51,resp,sizeof(resp));
-}
-
-extern const uint8_t kbd[256];
-
-void SendKeyboard_char(uint8_t data)
-{
-//5 14
-  
-  uint8_t resp[2] = {0x00,0x01};
-  uint8_t shift[2] = {((5<<1)|(14<<4)|(1)),0x01};
-  uint8_t shiftup[2] = {((5<<1)|(14<<4)|(0)),0x01};
-
- 
-  if(!data)return;
-
-  if(kbd[data] & 0x01)   GeneralTxMessage(0x51,shift,2);
-
-  resp[0] = kbd[data] | 0x01;
-  GeneralTxMessage(0x51,resp,sizeof(resp));
-  resp[0] = kbd[data] & 0xfe;
-  GeneralTxMessage(0x51,resp,sizeof(resp));
-
-  if(kbd[data] & 0x01)   GeneralTxMessage(0x51,shiftup,2);
-}
-
 
 
 void SendAPPResponse()
@@ -220,132 +155,63 @@ void SendAPPResponse()
   GeneralTxMessage(0x04,0,0);
 }
 
+void FirstNameResponse()
+{
+    uint8_t resp[] = {  ATTRIBUTE_ID_DEVICE_NAME,0x00,
+                        0x42,0x0c, //string type, length:0x0c
+                        0x72,0x4d,0x6b,0x65,0x79,0x62,0x6f,0x61,0x72,0x64,0x30,0x31 //data
+                        };
+                      
+  GeneralTxMessage(0x20,resp,sizeof(resp));
+}
+
 void SuperResponsePack_v2()
 {
   Serial.println("BigPack!");
 
-  //02 11 04 06 10 07 05 12 
+    //arguments requested:  02 11 04 06 10 07 05 12 
+    
     uint8_t resp[] = { 
-                     0x02,0x00,        //FW Version (uint8_t[2])
-                     0x19,
+                     0x02,0x00,           //FW Version (uint8_t[2])
+                     0x19,                //uint16_t
                      0x02,0x01,
                      
-                     0x11,0x00,        //Language (package_kb_language_t:8)
-                     0x30,
+                     0x11,0x00,           //Language (package_kb_language_t:8)
+                     0x30,                //enum8
                      0x01,       
                      
-                     0x04,0x00,        //DeviceClass (uint32) BIT(31)
-                     0x0b,
-                     0x02,0x00,0x00,0x80, //0x80000000 (?)
+                     0x04,0x00,           //DeviceClass (uint32) BIT(31)
+                     0x0b,                //int32_t
+                     0x02,0x00,0x00,0x80, //0x80000002 
                      
-                     0x06,0x00,         // ImageStartAddress (uint32)
-                     0x1b,
-                     0x00,0x40,0x00,0x00, //what the hell? - some random number
+                     0x06,0x00,           // ImageStartAddress
+                     0x1b,                //uint32_t
+                     0x00,0x40,0x00,0x00, //...?
                      
-                     0x10,0x00,        //KeyboardLayout (uint8)
-                     0x18,
+                     0x10,0x00,           //KeyboardLayout
+                     0x18,                //uint8_t
                      0x01,
                      
-                     0x07,0x00,        //DeviceName (...string),
-                     0x42,0x0c,
+                     0x07,0x00,           //DeviceName (...string),
+                     0x42,0x0c,           //character string 12bytes
                      0x72,0x4d,0x6b,0x65,0x79,0x62,0x6f,0x61,0x72,0x64,0x30,0x31, //The original one
                      
-                     0x05,0x00,
-                     0x48,//DeviceID uint32[4]
-                     0x0b,
-                     0x04,0x00,
-                     0x40,0x10,0x01,0x03,
+                     0x05,0x00,           //Device ID
+                     0x48,                //data array
+                     0x0b,                //Subtype: int32_t
+                     0x04,0x00,           //length: 0x0004
+                     0x40,0x10,0x01,0x03, //4*32bit data
                      0x28,0xa5,0xae,0xaf,
                      0x17,0x05,0x16,0x14,
                      0x10,0x05,0x00,0xf5,
-
-                     
-                     
-                     0x12,0x00,        //SerialNumber uint8_t[15]
-                     0x42,0x0f,
-                     0x52,0x4d,0x37,0x31,0x32,0x2d,
-                     0x33,0x31,0x31,0x2d,
-                     '1','1','2','1','2'//Some random ASCII numbers
+                                 
+                     0x12,0x00,           //SerialNumber
+                     0x42,0x0f,           //Character string 15byte
+                     0x52,0x4d,0x37,0x31, //data...
+                     0x32,0x2d,0x33,0x31,
+                     0x31,0x2d,
+                     '1','1','2','1','2'  //Some random ASCII numbers (feel free to modify)
                      };
   
-  
     GeneralTxMessage(0x20,resp,sizeof(resp));
-  
-}
-
-
-
-
-
-
-
-
-
-
-
-void Response_02()
-{
-  uint8_t resp[] = { 0x02,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-void Response_11()
-{
-  uint8_t resp[] = { 0x11,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-
-void Response_04()
-{
-  uint8_t resp[] = { 0x11,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-
-void Response_06()
-{
-  uint8_t resp[] = { 0x06,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-
-void Response_10()
-{
-  uint8_t resp[] = { 0x10,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-void Response_07()
-{
-  uint8_t resp[] = { ATTRIBUTE_ID_DEVICE_NAME,
-                     0x00,0x42,0x0c,0x72,0x4d,0x6b,0x65,0x79,0x62,0x6f,0x61,0x72,0x64,0x30,0x31 };
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-void Response_05()
-{
-  uint8_t resp[] = { 0x05,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
-}
-
-void Response_12()
-{
-  uint8_t resp[] = { 0x12,
-                     0x11,0x22,0x33,0x44};
-                      
-  GeneralTxMessage(0x20,resp,sizeof(resp));
 }

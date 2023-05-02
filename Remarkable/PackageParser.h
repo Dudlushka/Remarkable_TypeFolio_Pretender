@@ -62,10 +62,10 @@ typedef enum _package_kb_language
 extern uint8_t buff[BUFF_LEN];
 
 int ProcessPack_low(uint8_t data_in);
-void FirstTestResponse();
+void FirstNameResponse();
 void ReStartStateMachine();
 
-//void SuperResponsePack_v2();
+void SuperResponsePack_v2();
 void SendAuthKeyResponse();
 
 #endif /* INC_PACKETPARSER_H_ */

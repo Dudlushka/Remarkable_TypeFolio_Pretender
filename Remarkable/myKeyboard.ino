@@ -108,293 +108,324 @@ KEY(0, 0, KEY_RESERVED),
 };
 */
 
-const uint8_t kbd[256] =
+//cccc rrr e
+#define KEYB(ROW,COL,MOD) {(ROW<<1 | COL<<4),(MOD)}
+#define NONE     0x00
+#define SHIFT    0x01
+#define ALT      0x02
+#define INVALID  0x80
+
+
+const uint8_t kbd[256][2] =
 {
-  0x00,     //0
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),     //0
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,     //8
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),     //8
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,     //16
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),     //16
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //24
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //24
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //32
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //32
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //40
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //40
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,   //48
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //48
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //56
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,  
+  KEYB(0,0,INVALID),   //56
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),  
 
-  0x00,   //64  @
-   ((3<<1) | (14<<4) | 1),   //97 - a
-  ((0<<1) | (8<<4) | 1),   //98 - b 
-  ((1<<1) | (10<<4) | 1),   //99 - c
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //64  @
+  KEYB(3,14,SHIFT),    //-a
+  KEYB(0, 8,SHIFT),     //b
+  KEYB(1,10,SHIFT),    //c
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //72
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //72
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,   //80
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //80
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //88
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //88
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //96 - grave
-  ((3<<1) | (14<<4)),   //97 - a
-  ((0<<1) | (8<<4)),   //98 - b 
-  ((1<<1) | (10<<4)),   //99 - c
-  ((2<<1) | (6<<4)),   //enter
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //96 - grave
 
-  0x00,   //104
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(3,14,NONE),    //-a
+  KEYB(0,8,NONE),     //b
+  KEYB(1,10,NONE),    //c
+  KEYB(2,6,NONE),     //d - enter
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+
+  KEYB(0,0,INVALID),   //104
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,   //112
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //112
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,   //120
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,  
+  KEYB(0,0,INVALID),   //120
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),  
 
-  0x00,   //128
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),   //128
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,  
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),  
 
-    0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+    KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
   
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
 
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x00
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID)
 };
+
+
+
+
+
+void SendKeyboard_char(uint8_t data)
+{
+  uint8_t resp[2] = {0x00,0x01};
+  uint8_t shift[2] =   {((5<<1)|(14<<4)|(1)),0x01};
+  uint8_t shiftup[2] = {((5<<1)|(14<<4)|(0)),0x01};
+
+  if(!data)return;
+
+  if(kbd[data][1] & SHIFT)   GeneralTxMessage(0x51,shift,2);
+
+  resp[0] = kbd[data][0] | 0x01;
+  GeneralTxMessage(0x51,resp,sizeof(resp));
+  resp[0] = kbd[data][0] & 0xfe;
+  GeneralTxMessage(0x51,resp,sizeof(resp));
+
+  if(kbd[data][1] & SHIFT)   GeneralTxMessage(0x51,shiftup,2);
+}

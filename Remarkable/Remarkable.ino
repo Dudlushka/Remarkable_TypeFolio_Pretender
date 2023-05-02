@@ -85,7 +85,7 @@ void loop()
       }
    }
 
-    if(in_app)
+    if(in_app)  //if in "App mode" send keep alive messages
     {
       us = micros();
       if(us - p_us > 400000)
@@ -97,29 +97,18 @@ void loop()
 
    
    //------------------------------------
-   if(rec == REQ_FIRST_NAME)
-   {   
-    rec = 0;
-    FirstTestResponse();
+   if(rec == REQ_FIRST_NAME){ rec = 0;
+    FirstNameResponse();
    }
-  
-   if(rec == REQ_NEGOTIATION_PACK)
-   {
-    rec = 0;
+   if(rec == REQ_NEGOTIATION_PACK){ rec = 0;
     SuperResponsePack_v2(); 
    }
-
-   if(rec == REQ_AUTH_KEY)
-   {
-    rec = 0;
+   if(rec == REQ_AUTH_KEY){ rec = 0;
     SendAuthKeyResponse(); 
    }
-
-   if(rec == REQ_JUMP_APP)
-   {
-    rec = 0;
+   if(rec == REQ_JUMP_APP){ rec = 0;
     SendAPPResponse();
-    in_app = 1;
+    in_app = 1; //Set to "App mode"
    }
 }
 
