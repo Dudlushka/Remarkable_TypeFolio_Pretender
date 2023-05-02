@@ -31,3 +31,5 @@ The circuit I used (just some transistors I found in my shelf):
 [pogo_-_page_12](https://user-images.githubusercontent.com/132338151/235611830-a67d9f11-b7cb-493c-ad19-2e62dee38e93.png)
 
 To be continued...
+
+Special thx to Pablo
