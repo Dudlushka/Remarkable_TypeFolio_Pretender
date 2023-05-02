@@ -33,9 +33,9 @@ The circuit I used (just some transistors I found in my shelf):
 To be continued...
 
 
-========================================
+
 Special thx to Pablo
-========================================
+
 
 
 in this initial version,
@@ -48,12 +48,11 @@ c:column bits
 r:row bits
 e:event (1:press 0:release)
 
-------------------------------
+
 example:
 character 'a' is the 97th element of the ascii table. The RM2 lookup table says its Col:14 and Row:3... so the 97th element of our lookup table is: 
 ((3<<1) | (14<<4)),   //97 - a
 In my lookup table the lower bit means, there is a SHIFT key press necessary
-------------------------------
 
 In case of UPPER CASE letters the fw sends SHIFT DOWN / UP key events
 
