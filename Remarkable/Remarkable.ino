@@ -45,6 +45,10 @@ void loop()
          p_us = micros();
          in_app = 0;
        }
+       else if(ch == ':')
+       {
+          SedKeyBoardTestAll();
+       }
        else
        {
         SendKeyboard_char((uint8_t)ch);

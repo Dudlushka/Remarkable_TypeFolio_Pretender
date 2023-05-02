@@ -109,12 +109,21 @@ KEY(0, 0, KEY_RESERVED),
 */
 
 //cccc rrr e
-#define KEYB(ROW,COL,MOD) {(ROW<<1 | COL<<4),(MOD)}
+
+#define KEYBS(ROW,COL)(ROW<<1 | COL<<4)          //keyboard "simple"
+#define KEYB(ROW,COL,MOD) {KEYBS(ROW,COL),(MOD)} //keyboard with modifiers
+
 #define NONE     0x00
 #define SHIFT    0x01
 #define ALT      0x02
+#define CTRL     0x04
 #define INVALID  0x80
 
+#define SHIFT_KEY (KEYBS(0, 14))
+#define ALT_KEY   (KEYBS(2,  1))
+#define CTRL_KEY  (KEYBS(2,  0))
+#define CTRL_KEY2  (KEYBS(2,  0))
+#define ENTER_KEY (KEYBS(2,  6))
 
 const uint8_t kbd[256][2] =
 {
@@ -129,7 +138,7 @@ const uint8_t kbd[256][2] =
 
   KEYB(0,0,INVALID),     //8
   KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
+  KEYB(2,6,INVALID),      //'\n' - enter
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
@@ -154,7 +163,7 @@ const uint8_t kbd[256][2] =
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
 
-  KEYB(0,0,INVALID),   //32
+  KEYB(6,2,INVALID),   //32 -space
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
@@ -172,18 +181,18 @@ const uint8_t kbd[256][2] =
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
   
-  KEYB(0,0,INVALID),   //48
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
+  KEYB(3,4,INVALID),   //48 0
+  KEYB(4,12,INVALID),   //1
+  KEYB(4,11,INVALID),   //2
+  KEYB(3,11,INVALID),   //3
+  KEYB(3,10,INVALID),   //4
+  KEYB(3,9,INVALID),   //5
+  KEYB(3,8,INVALID),   //6
+  KEYB(2,7,INVALID),   //7
 
-  KEYB(0,0,INVALID),   //56
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
+  KEYB(4,7,INVALID),   //56 8
+  KEYB(5,5,INVALID),   //9
+  KEYB(5,3,INVALID),   //: - semicolon
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
@@ -192,7 +201,7 @@ const uint8_t kbd[256][2] =
 
   KEYB(0,0,INVALID),   //64  @
   KEYB(3,14,SHIFT),    //-a
-  KEYB(0, 8,SHIFT),     //b
+  KEYB(0, 8,SHIFT),    //b
   KEYB(1,10,SHIFT),    //c
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
@@ -231,13 +240,13 @@ const uint8_t kbd[256][2] =
   KEYB(3,14,NONE),    //-a
   KEYB(0,8,NONE),     //b
   KEYB(1,10,NONE),    //c
-  KEYB(2,6,NONE),     //d - enter
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
+  KEYB(0,10,NONE),    //d
+  KEYB(2,9,INVALID),  //e
+  KEYB(1,9,INVALID),  //f
+  KEYB(1,8,INVALID),  //g
 
-  KEYB(0,0,INVALID),   //104
-  KEYB(0,0,INVALID),
+  KEYB(0,0,INVALID),   //104 h
+  KEYB(0,0,INVALID),   //i
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
@@ -250,7 +259,7 @@ const uint8_t kbd[256][2] =
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
-  KEYB(0,0,INVALID),
+  KEYB(4,6,NONE),    //u
   KEYB(0,0,INVALID),
   KEYB(0,0,INVALID),
 
@@ -410,22 +419,114 @@ const uint8_t kbd[256][2] =
 
 
 
+static uint8_t keybSession;
+#define KB_DOWN 1
+#define KB_UP 0   //I mean release
+
+void Keyb_General(uint8_t kbdata,uint8_t event)
+{
+  uint8_t resp[2] = {0x00,0x00};
+  resp[0] = kbdata | (event & 0x01);
+  resp[1] = keybSession++; //its just a counter, not parsed by the dev btw
+  GeneralTxMessage(0x51,resp,2);
+}
+
+
+void UnicodeTest()
+{
+  char buff[20];
+
+  //Keyb_General(CTRL_KEY, KB_DOWN);
+  Keyb_General(SHIFT_KEY,KB_DOWN);
+  
+  SendKeyboard_char_simple('u');
+
+  sprintf(buff,"03b1\n");
+  for(int i=0;i<20;i++)
+  {
+    if(buff[i] == 0)break;
+    SendKeyboard_char_simple(buff[i]);
+  }
+  Keyb_General(SHIFT_KEY,KB_UP);
+  //Keyb_General(CTRL_KEY, KB_UP);
+  
+}
+
+
+
+void UnicodeTest2()
+{
+  char buff[20];
+
+  Keyb_General(ALT_KEY,KB_DOWN);
+  
+
+
+  sprintf(buff,"u192");
+  for(int i=0;i<20;i++)
+  {
+    if(buff[i] == 0)break;
+    SendKeyboard_char_simple(buff[i]);
+  }
+  
+   Keyb_General(ALT_KEY,KB_UP);
+  
+}
+
+
+
+
+
+
+void SedKeyBoardTestAll()
+{
+  char buff[30];
+  
+  for(int i=30;i<128;i++)
+  {
+    sprintf(buff,"%02x ",i);
+  
+    for(int j=0;j<30;j++)
+    {
+      if(buff[j] == 0)break;
+      SendKeyboard_char_simple(buff[j]);
+    }  
+
+    Keyb_General(ALT_KEY,KB_DOWN);
+      Keyb_General((i<<1),KB_DOWN);
+      Keyb_General((i<<1),KB_UP);
+    Keyb_General(ALT_KEY,KB_UP);
+    
+    SendKeyboard_char(' ');
+    SendKeyboard_char(' ');
+    delay(20);
+    
+  }  
+}
+
+
+
+void SendKeyboard_char_simple(uint8_t data)
+{
+  if(!data)return;
+  Keyb_General(kbd[data][0],KB_DOWN);
+  Keyb_General(kbd[data][0],KB_UP);
+}
+
 
 
 void SendKeyboard_char(uint8_t data)
 {
-  uint8_t resp[2] = {0x00,0x01};
-  uint8_t shift[2] =   {((5<<1)|(14<<4)|(1)),0x01};
-  uint8_t shiftup[2] = {((5<<1)|(14<<4)|(0)),0x01};
-
   if(!data)return;
 
-  if(kbd[data][1] & SHIFT)   GeneralTxMessage(0x51,shift,2);
+  if(kbd[data][1] & SHIFT)   Keyb_General(SHIFT_KEY,KB_DOWN);
+  if(kbd[data][1] & ALT)     Keyb_General(ALT_KEY,  KB_DOWN);
+  if(kbd[data][1] & CTRL)    Keyb_General(CTRL_KEY, KB_DOWN);
 
-  resp[0] = kbd[data][0] | 0x01;
-  GeneralTxMessage(0x51,resp,sizeof(resp));
-  resp[0] = kbd[data][0] & 0xfe;
-  GeneralTxMessage(0x51,resp,sizeof(resp));
+  Keyb_General(kbd[data][0],KB_DOWN);
+  Keyb_General(kbd[data][0],KB_UP);
 
-  if(kbd[data][1] & SHIFT)   GeneralTxMessage(0x51,shiftup,2);
+  if(kbd[data][1] & SHIFT)   Keyb_General(SHIFT_KEY,KB_UP);
+  if(kbd[data][1] & ALT)     Keyb_General(ALT_KEY,  KB_UP);
+  if(kbd[data][1] & CTRL)    Keyb_General(CTRL_KEY, KB_UP);  
 }
