@@ -28,7 +28,8 @@ Step5: The device sends "keep alive" messages, and keyboard event messages!
 
 
 The circuit I used (just some transistors I found in my shelf):
-[pogo_-_page_12](https://user-images.githubusercontent.com/132338151/235611830-a67d9f11-b7cb-493c-ad19-2e62dee38e93.png)
+![pogo_pinout_small](https://user-images.githubusercontent.com/132338151/235752679-8d9337df-3f65-466a-a5c2-9072b510fc36.jpg)
+
 
 The pogo pin adapter I made (with resin printer):
 ![pogo_holder](https://user-images.githubusercontent.com/132338151/235751801-2565f187-1751-423a-bce9-8dee67da5865.png)
