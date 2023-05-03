@@ -11,7 +11,7 @@ This project only translates some commands from the USB CDC UART to POGO Pin vir
 The communication with the RM2 on POGO pins:
 
 step0: The device pulls down the ID pin. 
-~~(You can start with '.' character now - The USB Tx pulls down with some junk)
+~~(You can start with '.' character now - The USB Tx pulls down with some junk)~~
 (You can start with PAUSE button (0x1A is being sent by Putty) now - but feel free to modify- The USB Tx pulls down with some junk)
 
 
@@ -45,8 +45,9 @@ Special thx to Pablo
 
 
 
-~~in this initial version,it only accepts 'a','b','c','A','B','C' and  '0'-'f' characters from the serial console. ...'Cause I was lazy to fill up all the fields of the lookup table.
-Almost all alphanummeric characters added, but still a lot are missing
+~~in this initial version,it only accepts 'a','b','c','A','B','C' and  '0'-'f' characters from the serial console. ...'Cause I was lazy to fill up all the fields of the lookup table.~~
+Almost all alphanummeric characters added, but still a lot are missing.
+The processPuttyTerminal() function parses the incoming characters for escape sequences (for accepting arrow key events, F1..F12 keys(not yet implemented) etc...)
 
 The lookup table contains the "inverse" of the lookup table found in the RM2 code
 
