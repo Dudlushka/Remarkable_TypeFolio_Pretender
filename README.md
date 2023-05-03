@@ -1,7 +1,7 @@
 # Remarkable_TypeFolio_Pretender
 
 ## General:
-This is a simple proof of concept project, that mimics the communication of the "Type Folio" keyboard via the POGO pins of the device.It is written for the Arduino Leonardo (Pro micro 5v - clone?) board. But can easily adapt to any Arduino board. This project only translates some commands from the USB CDC UART to POGO Pin virtual keyboard command
+  This is a simple proof of concept project, that mimics the communication of the "Type Folio" keyboard via the POGO pins of the device. It is written for the Arduino Leonardo (Pro micro 5v - clone?) board. But can easily adapt to any Arduino board. This project only translates some commands from the USB CDC UART to POGO Pin virtual keyboard command
 
 ## The communication with the RM2 on POGO pins:
 
@@ -40,6 +40,7 @@ To be continued...
 
 ## Usage
 ~~in this initial version,it only accepts 'a','b','c','A','B','C' and  '0'-'f' characters from the serial console. ...'Cause I was lazy to fill up all the fields of the lookup table.~~
+Start the negotiation process by physically pulling down the ID pin for a moment - or press the "Pause" button in putty terminal (or somehow send 0x1A character). After the negotiation process finished, you can start typing into the console window.
 Almost all alphanummeric characters added, but still a lot are missing.
 The processPuttyTerminal() function parses the incoming characters for escape sequences (for accepting arrow key events, F1..F12 keys(not yet implemented) etc...)
 
