@@ -37,21 +37,27 @@ void loop()
    {      
        //Serial1.write(Serial.read()); 
        char ch = Serial.read();
+
+         if(in_app){
+          //print USB serial data - during the app mode
+
+          if(ch<0x10)Serial.print("0");
+          Serial.print(ch,HEX);
+          Serial.print(" ");   
+        }
        
-       if(ch == '.')        //reset the device - start pulldown
+       //if(ch == '.')        //reset the device - start pulldown
+       if(ch == 0x1A)
        {
          Serial1.print(0xff); //pulls down ID
          ReStartStateMachine();
          p_us = micros();
          in_app = 0;
        }
-       else if(ch == ':')
-       {
-          SedKeyBoardTestAll();
-       }
        else
        {
-        SendKeyboard_char((uint8_t)ch);
+        //SendKeyboard_char((uint8_t)ch);
+        processPuttyTerminal((uint8_t)ch);
        }
 
        
@@ -59,12 +65,19 @@ void loop()
 
    if (Serial1.available()) //HW to USB
    {     
+
+    
       uint8_t aaa = Serial1.read();
-      if(aaa == ':')Serial.println("");
-      if(aaa<0x10)Serial.print("0");
-      
-      Serial.print(aaa,HEX);
-      Serial.print(" ");   
+
+        
+        if(!in_app){
+          //print POGO bus data - during the enumeration
+          if(aaa == ':')Serial.println("");
+          if(aaa == '.')Serial.println("");
+          if(aaa<0x10)Serial.print("0");
+          Serial.print(aaa,HEX);
+          Serial.print(" ");   
+        }
        
       if(ProcessPack_low(aaa)) // Valid Packet Found!
       { 
